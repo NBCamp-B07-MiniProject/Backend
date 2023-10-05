@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>댓글 게시판</title>
+</head>
+
+<body>
+  <h1>댓글 게시판</h1>
+
+  <form id="commentForm">
+    <input type="text" id="commentText" placeholder="댓글 입력">
+    <button id="save" type="button">등록</button>
+    <button class="delete-button">삭제</button>
+  </form>
+
+  <div id="comments">
+    <!-- 댓글 목록이 여기에 표시됩니다. -->
+  </div>
+
+  <script>
+    const comments = [];
+
+    // 등록 버튼 클릭 시 댓글 추가
+    document.getElementById("save").addEventListener("click", function () {
+      const commentText = document.getElementById("commentText").value.trim();
+
+      if (commentText !== "") {
+        comments.push(commentText);
+        displayComments();
+        document.getElementById("commentText").value = ""; // 입력 필드 초기화
+      }
+    });
+
+    // 댓글 목록을 화면에 표시하는 함수
+    function displayComments() {
+      const commentsDiv = document.getElementById("comments");
+      commentsDiv.innerHTML = ""; // 기존 댓글을 지우고 다시 출력
+
+      if (comments.length === 0) {
+        commentsDiv.innerHTML = "댓글이 없습니다.";
+        return;
+      }
+
+      for (let i = 0; i < comments.length; i++) {
+        const commentElement = document.createElement("div");
+        commentElement.textContent = comments[i];
+        commentElement.classList.add("comment");
+
+        // 삭제 버튼 추가
+        
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "삭제";
+        deleteButton.addEventListener("click", function () {
+          comments.splice(i, 1); // 배열에서 댓글 제거
+          displayComments(); // 댓글 목록 갱신
+        });
+
+        commentElement.appendChild(deleteButton);
+        commentsDiv.appendChild(commentElement);
+      }
+    }
+
+    // 초기 댓글 목록 표시
+    displayComments();
+  </script>
+
+  <style>
+    .comment {
+      margin: 5px 0;
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .delete-button {
+      margin-left: 0;
+    }
+  </style>
+</body>
+
+</html>
